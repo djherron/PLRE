@@ -1,0 +1,58 @@
+#
+# A file of propositional logic formula
+#
+# Each formula is in Conjunctive Normal Form (CNF)
+#
+
+
+#
+# formulae with a single clause
+#
+
+A
+(A)
+!A
+(!A)
+A | B 
+(A | B)
+( A | B )
+A | B | C 
+(A | B | C)
+(A | B | C )
+( A | B | C)
+( A | B | C )
+A | !B
+(A | !B)
+( A | !B )
+A | !B | C | !D
+(A | !B | C | !D)
+( A | !B | C | !D )
+
+#
+# formulae with multiple single-literal clauses
+#
+
+A & B
+(A) & (B)
+( A ) & ( B )
+A & B & C
+A & !B & C
+!A & B & !C  
+
+#
+# formulae with multiple complex clauses
+#
+
+A & B | C
+A & (B | C)
+A & ( B | C )
+A | B & C | D
+(A | B) & (C | D)
+( A | B ) & ( C | D )
+(A | B | !C) & (!B | C | !D)
+( A | B | !C ) & ( !B | C | !D )
+(A | B | !C) & (!B | C | !D) & (!A | D)
+( A | B | !C ) & ( !B | C | !D ) & ( !A | D )
+
+
+
