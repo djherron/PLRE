@@ -35,6 +35,7 @@ Per [Wikipedia](https://en.wikipedia.org/wiki/Conjunctive_normal_form), a CNF fo
 Consider the set of propositional symbols: `{A, B, C, D, E, F, G, H}`
 
 **Example formulae in CNF with a single clause**
+
 `A`
 
 `!A`
@@ -42,6 +43,7 @@ Consider the set of propositional symbols: `{A, B, C, D, E, F, G, H}`
 `A | B | !C`
 
 **Example formulae in CNF with a multiple clauses**
+
 `A & B & !C`
 
 `(A | B) & (C | !D)`
