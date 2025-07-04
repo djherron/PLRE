@@ -80,6 +80,8 @@ class PLRE():
         # load a text file containing propositional logic formulae
         with open(self.formulaFileName) as fp:
             formula_file_lines = fp.readlines()
+        
+        formula_index = 0
      
         # iterate over the lines of the text file
         for idx, line in enumerate(formula_file_lines):
@@ -101,10 +103,15 @@ class PLRE():
             if not linetype == 'formula':
                 continue
             
+            # count the formula, to give each on an 'index' number identifier
+            # reflecting its relative position in the text file of formulae
+            formula_index += 1
+            
             # parse the propositional logic formula and build its
             # computational graph
             fcg = pc.parse_formula_build_graph(line, 
                                                self.propSymbolSet,
+                                               formula_index,
                                                line_num,
                                                verbose=False)
             
@@ -169,16 +176,22 @@ class PLRE():
         
         for idx in formulae_not_satisfied:
             graph = self.fcg_store[idx]
-            results['indices'].append(idx)
-            results['lineNums'].append(graph.formula_lineNum)
             results['formulae'].append(graph.formula)
-            
+            results['indices'].append(graph.formula_index)
+            results['lineNums'].append(graph.formula_lineNum)
+
         return results
         
 
-    def display_formula_graph_by_index(self, index):
+    def display_formula_graph_by_index(self, formula_index):
+           
+        graph = None
+        for fcg in self.fcg_store:
+            if fcg.formula_index == formula_index:
+                graph = fcg
         
-        graph = self.fcg_store[index]
+        if graph == None:
+            raise ValueError('Formula index not recognised')
         
         pc.display_proplogic_graph(graph)
 

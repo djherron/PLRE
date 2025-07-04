@@ -24,10 +24,26 @@ propSymbolSet = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
 # specify a text file containing propositional logic formula expressed in
 # Conjunctive Normal Form (CNF) and referencing symbols in the symbol set
-formulaFileName = 'plre_formula.txt'
+formulaFileName = 'demo_formulae.txt'
 
 # instantiate a PLRE object
 plre = PLRE(propSymbolSet, formulaFileName)
+
+
+#%% display the formulae
+
+print('index | linenum | formula')
+print()
+for fcg in plre.fcg_store:
+    index = str(fcg.formula_index).zfill(2)
+    print(f'{index} | {fcg.formula_lineNum} | {fcg.formula}')
+
+
+#%% display a formula's computational graph BEFORE execution
+
+index = 24
+
+plre.display_formula_graph_by_index(index)
 
 
 #%% specify a possible world (a truth-value assignment)
@@ -40,28 +56,41 @@ for symbol in symbols_with_truthvalue_true:
     if symbol not in propSymbolSet:
         raise ValueError(f'symbol {symbol} not recognised')
 
+print(f'Symbols assigned value True: {symbols_with_truthvalue_true}')
+
 
 #%% compute the truth values of all propositional logic formulae
 
 res = plre.compute_truth_values(symbols_with_truthvalue_true)
 
-print('The specified world assigns True to symbols')
+print(f'Number of formulae: {len(plre.fcg_store)}')
+print()
+print('The truth-value assignment (possible world) assigns True to symbols')
 print(f'{symbols_with_truthvalue_true}')
 print('and False to all other symbols.')
 print()
-print(f"Number of formulae not satisfied: {len(res['indices'])}")
-print()
+print(f"Number of formulae NOT satisfied by this world: {len(res['indices'])}")
 
+
+#%% display the formulae not satisfied by the specified world
+
+print('The formulae NOT satisfied by the current world:')
+print()
+print('index | linenum | formula')
+print()
 for idx, formula in enumerate(res['formulae']):
-    print(f"Index  : {res['indices'][idx]}")
-    print(f"Line   : {res['lineNums'][idx]}")
-    print(f"Formula: {formula}")
+    index = str(res['indices'][idx]).zfill(2)
+    linenum = str(res['lineNums'][idx]).zfill(2)
+    print(f'{index} | {linenum} | {formula}')
+    #print(f"formula: {formula}")
+    #print(f"index  : {res['indices'][idx]}")
+    #print(f"linenum: {res['lineNums'][idx]}")
     print()
     
 
-#%% display a formula's computational graph
+#%% display a formula's computational graph AFTER execution
 
-index = 23
+index = 24
 
 plre.display_formula_graph_by_index(index)
 

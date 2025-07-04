@@ -76,7 +76,7 @@ class Graph_PropLogicFormulaCNF:
         A & !B & !C 
     '''
 
-    def __init__(self, formula, formula_lineNum=0):
+    def __init__(self, formula, formula_index=0, formula_lineNum=0):
         
         # a list of the nodes in the graph, stored in topological order so
         # that the graph can be executed by processing the list of nodes
@@ -87,7 +87,11 @@ class Graph_PropLogicFormulaCNF:
         # computational graph corresponds
         self.formula = formula
         
-        # integer; the line number in a text file containing the formula
+        # the index number (relative position) of the formula within a
+        # text file of formula
+        self.formula_index = formula_index
+        
+        # the line number in a text file containing the formula
         # represented by the computational graph; this line number acts as
         # a form of 'external Id' for referring to the formula in messages
         self.formula_lineNum = formula_lineNum
@@ -167,7 +171,8 @@ def throw_exception(formula, formula_lineNum, clause_num, message):
 
 #%% a function to parse a propositional logic formula in CNF
 
-def parse_formula_build_graph(formula, propSymbolSet, 
+def parse_formula_build_graph(formula, propSymbolSet,
+                              formula_index=0,
                               formula_lineNum=0, verbose=False):
     '''
     Parse a propositional logic formula, in CNF (conjunctive normal
@@ -180,7 +185,10 @@ def parse_formula_build_graph(formula, propSymbolSet,
     propSymbolSet : list of strings
         A list of string tokens representing the set (universe) of 
         propositional symbols that can appear in propositional logic formulae.
-    formula_lineNum : integer (positive)
+    formula_index : integer (non-negative)
+        An integer indicating the index number (ie relative position) of the
+        formula within a text file of formulae.
+    formula_lineNum : integer (non-negative)
         An integer indicating the line number of a text file to which the
         formula corresponds.
     verbose : Boolean
@@ -218,11 +226,12 @@ def parse_formula_build_graph(formula, propSymbolSet,
     
     if verbose:
         print()
-        print(f'formula : {formula}')
-        print(f'line num: {formula_lineNum}')
+        print(f'formula: {formula}')
+        print(f'index  : {formula_index}')
+        print(f'linenum: {formula_lineNum}')
 
     # instantiate a computational graph for the formula
-    g = Graph_PropLogicFormulaCNF(formula, formula_lineNum)
+    g = Graph_PropLogicFormulaCNF(formula, formula_index, formula_lineNum)
 
     # split the string containing the formula into tokens, using blank 
     # space as the delimiter
@@ -411,7 +420,7 @@ def parse_formula_build_graph(formula, propSymbolSet,
 def display_proplogic_graph(graph):
     
     print(f'formula: {graph.formula}')
-    print()
+    print(f'index  : {graph.formula_index}')
     print(f'linenum: {graph.formula_lineNum}')
     print()
     print('graph:')
