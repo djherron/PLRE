@@ -4,7 +4,7 @@ A propositional logic reasoning engine, or propositional model checker.
 
 # Overview
 
-The PLRE (propositional logic reasoning engine) is a pure Python tool (package) for determining the truth values of propositional logic formulae, given a truth-value assignment (an assignment of truth values to the signature of, i.e. to the propositional symbols used in, the formulae).
+The PLRE (propositional logic reasoning engine) is a pure Python tool (package) for determining the Boolean truth values of propositional logic formulae, given a truth-value assignment (an assignment of truth values to the propositional symbols used in the formulae).
 
 The propositional logic formulae are expressed in text strings, in  [conjunctive normal form](https://en.wikipedia.org/wiki/Conjunctive_normal_form) (CNF), in a prepared text file.
 
