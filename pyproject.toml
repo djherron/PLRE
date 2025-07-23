@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "plre"
-version = "1.0.0"
+version = "0.5.0"
 description = """PLRE is a propositional logic reasoning engine."""
 authors = [{name = "David Herron", email = "david.herron@citystgeorges.ac.uk"}]
 maintainers = [{name = "David Herron", email = "david.herron@citystgeorges.ac.uk"}]
