@@ -25,7 +25,7 @@ Functionality of the PLRE:
 
 #%%
 
-import plre_core as pc
+from . import plre_core as pc
 
 
 #%%

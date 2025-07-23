@@ -13,7 +13,17 @@ functionality.
 
 #%%
 
-from plre import PLRE
+use_installed_package = False
+
+if use_installed_package:
+    pass
+else: 
+    import os, sys
+    DEMO_DIR = os.path.abspath(os.path.dirname(__file__))
+    PROJECT_DIR = os.path.abspath(os.path.join(DEMO_DIR, '..'))
+    sys.path.insert(0, PROJECT_DIR)
+
+from plre.plre import PLRE
 
 
 #%%

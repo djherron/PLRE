@@ -120,4 +120,24 @@ id | formula | computed truth value
 
 The PLRE would report formula 3 as NOT being **satisfied** by the truth-value assignment (the possible world).
 
+# Installation
+
+You can install the PLRE package (i.e. the `plre` directory) using `pip` by doing the following:
+
+1. download the PLRE GitHub repository
+
+2. open a Terminal session
+
+3. move into the root directory of the PLRE project, where the `pyproject.toml` file lives
+* `$ cd <PLRE-root-dir>`
+
+4. install the PLRE package
+* `$ pip install .`
+
+`pip` reads the `pyproject.toml` file which instructs it to invoke `setuptools` to generate a `.whl` file containing the `plre` directory only.
+
+`pip` then installs the `.whl` file in the active Python environment under the package name `plre`.
+
+You can now `import plre`. 
+
 

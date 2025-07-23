@@ -18,7 +18,17 @@ This script demonstrates:
 
 #%% imports
 
-import plre_core as pc
+use_installed_package = False
+
+if use_installed_package:
+    pass
+else: 
+    import os, sys
+    DEMO_DIR = os.path.abspath(os.path.dirname(__file__))
+    PROJECT_DIR = os.path.abspath(os.path.join(DEMO_DIR, '..'))
+    sys.path.insert(0, PROJECT_DIR)
+
+import plre.plre_core as pc
 
 
 #%% specify a set of propositional symbols
