@@ -18,7 +18,7 @@ This script demonstrates:
 
 #%% imports
 
-use_installed_package = False
+use_installed_package = True
 
 if use_installed_package:
     pass
@@ -27,6 +27,9 @@ else:
     DEMO_DIR = os.path.abspath(os.path.dirname(__file__))
     PROJECT_DIR = os.path.abspath(os.path.join(DEMO_DIR, '..'))
     sys.path.insert(0, PROJECT_DIR)
+
+
+#%%
 
 import plre.plre_core as pc
 
@@ -40,51 +43,62 @@ propSymbolSet = ['A', 'B', 'C', 'D', 'E', 'F', 'G']
 
  #%% specify a propositional logic formula, in conjunctive normal form (CNF)
 
-formula = '(A )  & C'
 
-#formula = '(!A | !B) | (A) & C'
-#formula = '(!A | !B) & C'
-#formula = '(A | !B) & C'
-#formula = '(A | B) & C'
-#formula = 'A | B | C'
-#formula = '!A | B | C & !B | !C & C | D'
+formula = '(A | B | !C) & (!D | E | !F)'
+
 
 #
-# --- tested --- single clause formulae
+# single clause formulae
 #
 
 #formula = 'A'
+#formula = '(A)'
 #formula = '( A )'
+
+#formula = '!A'
+#formula = '(!A)'
+#formula = '( !A )'
+
+#formula = 'A | B'
+#formula = '(A | B)'
+#formula = '( A | B )'
+
+#formula = 'A | !B'
+#formula = '(A | !B)'
+#formula = '( A | !B )'
+
 #formula = 'A | B | C'
-#formula = '( A | B | C'      # fails with Exception
+#formula = '(A | B | C)'
 #formula = '( A | B | C )'
-#formula = 'A | B | !C'
+
+#formula = '!A | B | !C'
+#formula = '(!A | B | !C)'
+#formula = '( !A | B | !C )'
 
 #
-# --- tested --- multiple clauses, but all clauses are single-literal
+# multi-clause formulae, where each clause uses one literal only
 #
 
 #formula = 'A & B'
 #formula = 'A & B & C'
 #formula = 'A & !B & C'
 #formula = '!A & !B & !C'
-#formula = '( A & B & C'      # fails with Exception
-#formula = '( A & B & C )'    # fails with Exception
+#formula = '(A) & C'
+
 
 #
-# --- tested --- multiple clauses with complex clauses
+# multi-clause formulae, where each clause can have multiple literals
 #
 
-#formula = 'A & ( B | C )'
-#formula = '( A | B ) & ( C | D )'
-#formula = '( A | B | !C ) & ( !B | C | !D )'
-#formula = '( A | B | !C ) & ( !B | C | !D ) & ( !A | D )'
+#formula = 'A & (B | C)'
+#formula = '(A | B) & (C | D)'
+#formula = '(A | B | !C) & (!D | E | !F)'
 
 # this pair of test examples demonstrate that parentheses are optional;
 # the parsing recognises the precedence of the logical AND in the CNF
 # format and that operator, &, is sufficient to mark the start/end of 
 # clauses; but users may prefer using parentheses to give clarity 
-#formula = '( A | B ) & ( C | !D ) & ( E | F | G )'
+#formula = '(A | B) & (C | !D) & (E | F | G)'
 #formula = 'A | B & C | !D & E | F | G'
 
 

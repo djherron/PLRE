@@ -3,7 +3,13 @@
 #
 # Each formula is in Conjunctive Normal Form (CNF)
 #
-
+# Propositional symbols must be valid Python identifiers, per str.isidentifier()
+#
+# The default characters for logical operators are: 
+# - logical_OR  : '|' (vertical bar)
+# - logical_AND : '&' (ampersand)
+# - logical_NOT : '!' (exclamation mark or bang)
+#
 
 #
 # formulae with a single clause

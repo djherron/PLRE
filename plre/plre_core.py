@@ -22,6 +22,22 @@ Source:
     Tutorial 4: Computation Graphs
 '''
 
+
+#%% 
+
+class LogicOps:
+    '''
+    A class defining the character constants used to represent 
+    propositional (Boolean) logical operations.
+    
+    If users prefer to use different characters in their propositional 
+    logic formulae, this is the place to specify them.
+    '''
+    logical_OR = '|'
+    logical_AND = '&'
+    logical_NOT = '!'
+
+
 #%%
 
 class GraphNode:
@@ -159,7 +175,7 @@ class Graph_PropLogicFormulaCNF:
 def throw_exception(formula, formula_lineNum, clause_num, message):
     
     print()
-    print('Formula parsing problem')
+    print('Problem parsing formula ...')
     print()
     print(f'formula   : {formula}')
     print(f'line num  : {formula_lineNum}')
@@ -211,6 +227,18 @@ def parse_formula_build_graph(formula, propSymbolSet,
         3) logical AND operator '&'
         4) left parenthesis '('
         5) right parenthesis ')'
+    
+    Space characters delimit all tokens.
+                    
+    With regard to parentheses, this parser permits up to 1 pair of 
+    parentheses per CNF clause in a CNF formula. 
+    
+    If used, a pair of parentheses must enclose an entire CNF clause. 
+    
+    If used, a left parenthesis can begin a clause with or without a space
+    between it and the first literal.
+    If used, a right parenthesis can close a clause with or without a space
+    between it and the last literal.
 
     '''
 
@@ -222,6 +250,7 @@ def parse_formula_build_graph(formula, propSymbolSet,
     clause_literal_obtained = False
     clause_component_last = None
     clause_component_current = None
+    clause_closed = False
     clause_num = 1
     
     if verbose:
@@ -245,29 +274,36 @@ def parse_formula_build_graph(formula, propSymbolSet,
         
         propSymbol = None
         
-        if token == '|':  # logical OR
+        if token == LogicOps.logical_OR:
         
             if not clause_literal_obtained:
                 msg = 'clause must begin with a literal'
                 throw_exception(formula, formula_lineNum, clause_num, msg)
-        
-            operator_OR_active = True
             
+            if clause_closed:
+                msg = 'clause ill-formed'
+                throw_exception(formula, formula_lineNum, clause_num, msg)            
+            
+            operator_OR_active = True        
             clause_component_current = 'operator'
             
-        elif token == '&':  # logical AND
+        elif token == LogicOps.logical_AND:
+
+            if not clause_literal_obtained:
+                msg = 'empty clause; logical AND misplaced'
+                throw_exception(formula, formula_lineNum, clause_num, msg)            
 
             if operator_OR_active:
                 msg = 'clause ill-formed'
                 throw_exception(formula, formula_lineNum, clause_num, msg)
 
             if left_bracket_open:
-                msg = 'clause needs a closing parenthesis'
+                msg = 'clause needs a closing right parenthesis'
                 throw_exception(formula, formula_lineNum, clause_num, msg)
         
-            # the AND operator marks the end of a CNF clause, so we do
-            # end-of-clause processing for the current clause, and set up
-            # for a new clause
+            # the AND operator marks the end of one CNF clause and the start
+            # of a new one, so we do end-of-clause processing for the current 
+            # clause, and some setup for a new CNF clause
             if operator_AND_active:
                 # add a node for the *previous* logical_AND to the graph,
                 # ANDing whatever came before the current clause with the
@@ -287,6 +323,7 @@ def parse_formula_build_graph(formula, propSymbolSet,
             clause_literal_obtained = False
             clause_component_current = None
             clause_component_last = None
+            clause_closed = False
             clause_num += 1
                 
         elif token == '(':
@@ -296,50 +333,58 @@ def parse_formula_build_graph(formula, propSymbolSet,
                 throw_exception(formula, formula_lineNum, clause_num, msg)
             
             if left_bracket_open:
-                msg = 'two open left parentheses not valid in CNF'
+                msg = 'two open left parentheses not permitted'
                 throw_exception(formula, formula_lineNum, clause_num, msg)
-            else:
-                left_bracket_open = True
+
+            left_bracket_open = True
                 
         elif token == ')':
             
-            if left_bracket_open:
-                left_bracket_open = False
-            else:
-                msg = 'singleton right parenthesis not allowed'
+            if not left_bracket_open:
+                msg = 'singleton right parenthesis not permitted'
                 throw_exception(formula, formula_lineNum, clause_num, msg)
+            
+            left_bracket_open = False
+            clause_closed = True            
                 
         else:  # a literal
             
             literal = token
-        
+            
+            if clause_closed:
+                msg = 'clause ill-formed'
+                throw_exception(formula, formula_lineNum, clause_num, msg)                
+            
             if literal.startswith('('):
                 if clause_literal_obtained:
                     msg = 'left parenthesis misplaced'
                     throw_exception(formula, formula_lineNum, clause_num, msg)
                 if left_bracket_open:
-                    msg = 'two open left parentheses not valid in CNF'
+                    msg = 'two open left parentheses not permitted'
                     throw_exception(formula, formula_lineNum, clause_num, msg)
-                else:
-                    left_bracket_open = True
+                left_bracket_open = True
                 literal = token[1:]
+                if literal == ')':
+                    msg = 'empty clause not permitted'
+                    throw_exception(formula, formula_lineNum, clause_num, msg)                    
             
-            if literal.startswith('!'):   # negated literal
+            if literal.startswith(LogicOps.logical_NOT):   # negated literal
                 literal = literal[1:]
                 if len(literal) == 0:
-                    msg = 'singleton ! operator not allowed'
+                    msg = 'singleton logical_NOT operator not permitted'
                     throw_exception(formula, formula_lineNum, clause_num, msg)
                 negatedPropSymbol = True
             else:
                 negatedPropSymbol = False
             
             propSymbol = literal
+            
             if literal.endswith(')'):
-                if left_bracket_open:
-                    left_bracket_open = False
-                else:
-                    msg = 'singleton right parenthesis not allowed'
-                    throw_exception(formula, formula_lineNum, clause_num, msg)                
+                if not left_bracket_open:
+                    msg = 'singleton right parenthesis not permitted'
+                    throw_exception(formula, formula_lineNum, clause_num, msg)
+                left_bracket_open = False
+                clause_closed = True
                 propSymbol = literal[:-1]
             
             if propSymbol not in propSymbolSet:
@@ -399,14 +444,21 @@ def parse_formula_build_graph(formula, propSymbolSet,
             
             clause_component_last = clause_component_current 
 
+
+    if operator_OR_active:
+        msg = 'clause ill-formed; logical OR must be followed by literal'
+        throw_exception(formula, formula_lineNum, clause_num, msg)
     
     if left_bracket_open:
-        raise ValueError('formula needs a closing parenthesis')
-    
-    if operator_OR_active:
-        raise ValueError(f'clause {clause_num} ill-formed')
+        msg = 'clause needs a closing parenthesis'
+        throw_exception(formula, formula_lineNum, clause_num, msg)
     
     if operator_AND_active:
+        
+        if not clause_literal_obtained:
+            msg = 'clause empty; logical AND must be followed by clause'
+            throw_exception(formula, formula_lineNum, clause_num, msg)
+        
         # add a node for the last active logical_AND operator to the graph,
         # and thereby connect (AND) the last clause of the formula with
         # the graph containing all the other clauses of the formula

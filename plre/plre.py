@@ -68,12 +68,14 @@ class PLRE():
             raise ValueError('the set of propositional symbols contains duplicates')
         
         for symbol in self.propSymbolSet:
-            if symbol.startswith('!'):
-                raise ValueError("propositional symbol names cannot begin with '!'")
-            if symbol.startswith('('):
-                raise ValueError("propositional symbol names cannot begin with '('")           
-            if symbol.endswith(')'):
-                raise ValueError("propositional symbol names cannot end with ')'")         
+            if not symbol.isidentifier():
+                raise ValueError("propositional symbol names must be valid Python identifiers")
+            if pc.LogicOps.logical_NOT in symbol:
+                raise ValueError("propositional symbol names cannot use the logical NOT character")
+            if pc.LogicOps.logical_AND in symbol:
+                raise ValueError("propositional symbol names cannot use the logical AND character")           
+            if pc.LogicOps.logical_OR in symbol:
+                raise ValueError("propositional symbol names cannot use the logical OR character")
     
     def load_formulae(self):
         
