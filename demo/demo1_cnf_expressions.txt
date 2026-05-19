@@ -1,0 +1,99 @@
+
+#
+# This is a demonstration input file for the PLRE.
+#
+# Such input files contain specifications of propositional logic 
+# formulae, expressed in CNF (conjunctive normal form). We refer 
+# to these as CNF expressions. 
+#
+# The CNF expressions in a PLRE input file must share (refer to)
+# a common set of propositional symbols.
+#
+# Such input files use blank lines to separate one CNF expression
+# from another.
+#
+# Such input files permit a CNF expression to span multiple
+# adjacent lines.
+#
+# Such input files permit comments. Comment lines begin with a '#'
+# character. Comments are optional. PLRE user's may find them
+# helpful for organising and managing their specifications of CNF 
+# expressions. But the PLRE itself ignores them.
+#
+
+#
+# The propositional symbols referred to by the CNF expressions in
+# this PLRE input file belong to the following set of propositional
+# symbols: {A, B, C, D}
+#
+
+
+
+#
+# example CNF expressions consisting of one CNF clause
+# containing a single literal
+#
+
+A
+
+(A)
+
+!A
+
+(!A)
+
+
+
+#
+# example CNF expressions consisting of one CNF clause
+# containing multiple literals
+#
+
+(A | B)
+
+(A | B | C)
+
+(A | !B)
+
+(A | !B | C | !D)
+
+
+
+#
+# example CNF expressions consisting of multiple CNF clauses
+# containing one or more literals
+#
+
+A & B
+
+(A) & (B)
+
+A & !B & C
+
+!A & B & !C  
+
+A & (B | C)
+
+(A | B) & (C | !D)
+
+
+
+#
+# example CNF expressions consisting of multiple CNF clauses
+# that span multiple adjacent lines
+#
+
+A & 
+B & 
+C
+
+(A | B | !C) & 
+(!B | C | !D)
+
+(A | B | !C) & 
+(!B | C | !D) & 
+(!A | D)
+
+
+
+
