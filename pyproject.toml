@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "plre"
+version = "1.0.0"
+description = """PLRE is a propositional logic reasoning engine."""
+authors = [{name = "David Herron", email = "dave.herron1@gmail.com"}]
+maintainers = [{name = "David Herron", email = "dave.herron1@gmail.com"}]
+license = "MIT"
+readme = "README.md"
+requires-python = ">=3.8"
+keywords = ["automated reasoning", "computational logic", "propositional logic", "conjunctive normal form", "CNF", "model checking"]
+
+[project.urls]
+repository = "https://github.com/djherron/PLRE"
+
+[tool.setuptools]
+packages = ["plre"]
+
